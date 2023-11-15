@@ -29,6 +29,8 @@ the dataset by "Class == 'Obesity / Weight Status'" and "Question == 'Percent of
 since we only care about the obesity rate in this dataset. Since the dataset contains the
 necessary information, it is possible to answer the questions with this dataset. 
 
+## Preliminary Visualization
+
 ## Note
 In order to make our mapping more aesthetically pleasing, we decided to use abbreviations for the full name of the race/ethnicity.
 
