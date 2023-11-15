@@ -116,6 +116,7 @@ df_summary_race$`Race/Ethnicity` <- factor(df_summary_race$`Race/Ethnicity`, lev
 ```
 
 ```{r, fig.width= 5, fig.height= 4}
+average_obesity_rate <- mean(df_race$Data_Value_Alt, na.rm = TRUE)
 ggplot(df_summary_race, aes(x=`Race/Ethnicity`, y=Avg_Data_Value_Alt)) +
   geom_bar(stat="identity", fill = "#404788FF") + 
   labs(y= "The Obseity Rate",
@@ -144,7 +145,12 @@ ggplot(df_summary_race, aes(x=`Race/Ethnicity`, y=Avg_Data_Value_Alt)) +
         panel.grid.minor.y = element_blank(),
         panel.grid.major.x = element_blank(),         
         plot.title = element_text(size = 12, face = 'bold'),
-        plot.caption.position = 'plot')
+        plot.caption.position = 'plot') +
+  geom_hline(yintercept = mean(df_race$Data_Value_Alt), linetype = "dashed", color = "red", size = 1) +
+  geom_text(aes(x = 2, y = average_obesity_rate, label = "Average Obesity Rate"), 
+            color = "red", 
+            size = 3, 
+            vjust = -1)
 ```
 
 option: national/ state/ year/ income? (possible)
