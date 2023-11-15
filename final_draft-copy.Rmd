@@ -100,6 +100,7 @@ Abbreviations comparison table:
 df_race <- df %>%
   filter(LocationAbbr == 'US') %>%
   filter(Class == 'Obesity / Weight Status') %>%
+  filter(Question == 'Percent of adults aged 18 years and older who have obesity') %>%
   select(`Race/Ethnicity`, Data_Value_Alt) %>%
   na.omit()
 ```
@@ -111,7 +112,7 @@ df_summary_race <- df_race %>%
 
 df_summary_race %>% arrange(Avg_Data_Value_Alt)
 
-df_summary_race$`Race/Ethnicity` <- factor(df_summary_race$`Race/Ethnicity`, levels = c("Asian", "Other", "2 or more races", "Non-Hispanic White", "Hawaiian/Pacific Islander", "American Indian/Alaska Native", "Hispanic", "Non-Hispanic Black"))
+df_summary_race$`Race/Ethnicity` <- factor(df_summary_race$`Race/Ethnicity`, levels = c("Asian", "Other", "Non-Hispanic White", "2 or more races", "Hispanic", "Hawaiian/Pacific Islander", "American Indian/Alaska Native", "Non-Hispanic Black"))
 ```
 
 ```{r, fig.width= 5, fig.height= 4}
@@ -127,11 +128,11 @@ ggplot(df_summary_race, aes(x=`Race/Ethnicity`, y=Avg_Data_Value_Alt)) +
     labels = c(
       "Asian" = "AS",
       "Other" = "OTR", 
-      "2 or more races" = "2+",
       "Non-Hispanic White" = "NHW",
+      "2 or more races" = "2+",
+      "Hispanic" = "HISP",
       "Hawaiian/Pacific Islander" = "HPI",
       "American Indian/Alaska Native" = "AI/AN",
-      "Hispanic" = "HISP",
       "Non-Hispanic Black" = "NHB"
       )
     ) +
@@ -153,6 +154,7 @@ option: national/ state/ year/ income? (possible)
 ```{r}
 df_state <- df %>%
   filter(Class == 'Obesity / Weight Status') %>%
+  filter(Question == 'Percent of adults aged 18 years and older who have obesity') %>%
   filter(LocationAbbr != "US") %>%
   select(LocationAbbr, Data_Value_Alt) %>%
   na.omit()
