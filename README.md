@@ -20,6 +20,7 @@ We decided to use the “Nutrition, Physical Activity, and Obesity - Behavioral 
 Surveillance System” dataset that we found on data.gov. 
 
 This dataset contains 33 variables and 88629 observations, documenting the obesity rates for eight races in states across the U.S. from 2011 to 2021.
+This is a huge dataset that we cannot upload it to GitHub. To download the dataset, please use the link below. 
 
 The link to the dataset is: https://catalog.data.gov/dataset/nutrition-physical-activity-and-obesity-behavioral-risk-factor-surveillance-system
 
