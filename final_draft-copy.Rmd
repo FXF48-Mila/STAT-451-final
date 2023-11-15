@@ -117,7 +117,7 @@ df_summary_race$`Race/Ethnicity` <- factor(df_summary_race$`Race/Ethnicity`, lev
 
 ```{r, fig.width= 5, fig.height= 4}
 ggplot(df_summary_race, aes(x=`Race/Ethnicity`, y=Avg_Data_Value_Alt)) +
-  geom_bar(stat="identity") + 
+  geom_bar(stat="identity", fill = "#404788FF") + 
   labs(y= "The Obseity Rate",
        x = "Race / Ethnicity", 
        title = "National Average Obesity Rates by Race, 2011-2021") + 
