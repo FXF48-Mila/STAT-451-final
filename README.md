@@ -23,11 +23,34 @@ This dataset contains 33 variables and 88629 observations, documenting the obesi
 
 The link to the dataset is: https://catalog.data.gov/dataset/nutrition-physical-activity-and-obesity-behavioral-risk-factor-surveillance-system
 
-The columns we choose to use to solve this question in the dataset are `Race/Ethnicity`
+The columns we choose to use to solve this question in the dataset are `Race / Ethnicity`
 (for race), `Data_Value_Alt` (for the BMI), `Geolocation` (for the geographical location), and `Year End` (for year). We will filter out
 the dataset by "Class == 'Obesity / Weight Status'" and "Question == 'Percent of adults aged 18 years and older who have obesity'"
 since we only care about the obesity rate in this dataset. Since the dataset contains the
 necessary information, it is possible to answer the questions with this dataset. 
+
+## Note
+In order to make our mapping more aesthetically pleasing, we decided to use abbreviations for the full name of the race/ethnicity.
+
+Below is the Abbreviations Comparison Table:
+
+"AS" = "Asian" 
+
+"OTR" = "Other" 
+
+"2+" = "2 or more races" 
+
+"NHW" = "Non-Hispanic White"
+
+"HPI" = "Hawaiian/Pacific Islander" 
+
+"AI/AN" = "American Indian/Alaska Native" 
+
+"HISP" = "Hispanic" 
+
+"NHB" = "Non-Hispanic Black"
+
+
 
 ## Analysis for Plot 1: National Average Obesity Rates by Race, 2011-2021
 
