@@ -195,10 +195,32 @@ df_year <- df %>%
 ```
 
 ```{r}
-ggplot(df_year, aes(x=YearEnd, y=Data_Value_Alt, group=`Race/Ethnicity`, color=`Race/Ethnicity`)) +
+# Create a new variable indicating the last value for each group
+last_values <- df_year %>%
+  group_by(`Race/Ethnicity`) %>%
+  summarize(last_value = last(Data_Value_Alt)) %>%
+  arrange(desc(last_value))
+
+# Order the levels of Race/Ethnicity based on the last values
+df_year$`Race/Ethnicity` <- factor(df_year$`Race/Ethnicity`, levels = last_values$`Race/Ethnicity`)
+
+# Define custom labels
+custom_labels <- c("Asian" = "AS",
+                   "Other" = "OTR",
+                   "Non-Hispanic White" = "NHW",
+                   "2 or more races" = "2+",
+                   "Hispanic" = "HISP",
+                   "Hawaiian/Pacific Islander" = "HPI",
+                   "American Indian/Alaska Native" = "AI/AN",
+                   "Non-Hispanic Black" = "NHB")
+
+# Plot using ggplot with the modified order of levels and custom legend labels
+ggplot(df_year, aes(x = YearEnd, y = Data_Value_Alt, color = `Race/Ethnicity`)) +
   geom_line() +
   theme_minimal() +
-  labs(title="Trend of Obesity Rate by Race/Ethnicity (2011-2020)",
-       x="Year",
-       y="Obesity Rate (%)")
+  labs(title = "Trend of Obesity Rate by Race/Ethnicity (2011-2020)",
+       x = "Year",
+       y = "Obesity Rate (%)") +
+  scale_color_manual(values = last_values$`Race/Ethnicity`, labels = custom_labels) 
+
 ```
