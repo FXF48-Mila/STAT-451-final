@@ -28,3 +28,8 @@ The columns we choose to use to solve this question in the dataset are `Race/Eth
 the dataset by "Class == 'Obesity / Weight Status'" and "Question == 'Percent of adults aged 18 years and older who have obesity'"
 since we only care about the obesity rate in this dataset. Since the dataset contains the
 necessary information, it is possible to answer the questions with this dataset. 
+
+## Analysis for Plot 1: National Average Obesity Rates by Race, 2011-2021
+
+We selected a bar plot to represent the average obesity rates across different races nationwide from 2011 to 2021. The data indicates that Asians report the lowest obesity rates relative to other racial groups, with a considerable gap. All other racial categories show average obesity rates exceeding 25%, with the Non-Hispanic Black population registering the highest average rate. The average nationwide obesity rate stands at 29.92%, and as illustrated by the plot, with the exception of Asians, Others, and Non-Hispanic Whites, all other groups exceed this average.
+
