@@ -1,0 +1,202 @@
+---
+title: "Untitled"
+author: "Liuyixin Shao"
+date: "2023-11-09"
+output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(scales)
+library(usmap)
+```
+
+```{r}
+df <- read_csv('/Users/suyi/Downloads/stat451/Nutrition__Physical_Activity__and_Obesity_-_Behavioral_Risk_Factor_Surveillance_System.csv')
+```
+
+# Some random overview of the dataset
+
+```{r}
+colnames(df)
+```
+
+```{r}
+unique(df%>% select('Topic'))
+```
+
+```{r}
+unique(df%>% select('Race/Ethnicity'))
+```
+
+```{r}
+unique(df%>% select('Total'))
+```
+
+```{r}
+df %>% distinct(Income)
+```
+
+```{r}
+range(df$YearEnd)
+```
+
+Analyzing obesity rates by race is critical to understanding differences
+in health outcomes across racial and ethnic groups. Such analyses can
+help to identify the underlying sociocultural, economic, and
+environmental factors that contribute to varying obesity prevalence
+rates, thereby drawing attention to addressing health inequities and
+scaling up more effective public health initiatives within a given
+group. Here, the question we want to address is "Do obesity rates vary
+by race?" More specifically, we would like to explore this issue in
+terms of geographical location and year. We decided to use the
+"Nutrition, Physical Activity, and Obesity - Behavioral Risk Factor
+Surveillance System" dataset that we found on data.gov. The columns we
+choose to use to solve this question in the dataset are "Race.Ethnicity"
+(for race), "Data_Value_Alt" (for the BMI), "Geolocation" (for the
+geographical location), and "Year End" (for year). We will filter out
+the dataset by "Class == Obesity / Weight Status" since we only care
+about the obesity rate in this dataset. Since the dataset contains the
+necessary information, it is possible to answer the questions with this
+dataset.
+
+# Plot of obesity rate by race (national/ all year)
+
+The proportion of adults with a body mass index (BMI) equal to or
+greater than 30 ($\geq 30 kg/m^2$) based on self-reported weight and height
+
+2 notes:
+
+The obesity rate is defined as the proportion of adults with a body mass
+index (BMI) $\geq 30 kg/m^2$
+
+Abbreviations comparison table:
+
+"AS" = "Asian" 
+
+"OTR" = "Other" 
+
+"2+" = "2 or more races" 
+
+"NHW" = "Non-Hispanic White"
+
+"HPI" = "Hawaiian/Pacific Islander" 
+
+"AI/AN" = "American Indian/Alaska Native" 
+
+"HISP" = "Hispanic" 
+
+"NHB" = "Non-Hispanic Black"
+
+```{r}
+df_race <- df %>%
+  filter(LocationAbbr == 'US') %>%
+  filter(Class == 'Obesity / Weight Status') %>%
+  select(`Race/Ethnicity`, Data_Value_Alt) %>%
+  na.omit()
+```
+
+```{r}
+df_summary_race <- df_race %>%
+  group_by(`Race/Ethnicity`) %>%
+  summarise(Avg_Data_Value_Alt = mean(Data_Value_Alt))
+
+df_summary_race %>% arrange(Avg_Data_Value_Alt)
+
+df_summary_race$`Race/Ethnicity` <- factor(df_summary_race$`Race/Ethnicity`, levels = c("Asian", "Other", "2 or more races", "Non-Hispanic White", "Hawaiian/Pacific Islander", "American Indian/Alaska Native", "Hispanic", "Non-Hispanic Black"))
+```
+
+```{r, fig.width= 5, fig.height= 4}
+ggplot(df_summary_race, aes(x=`Race/Ethnicity`, y=Avg_Data_Value_Alt)) +
+  geom_bar(stat="identity") + 
+  labs(y= "The Obseity Rate",
+       x = "Race / Ethnicity", 
+       title = "National Average Obesity Rates by Race, 2011-2021") + 
+  scale_y_continuous(limits=c(0, 40),
+                     breaks=seq(0, 40, 5),
+                     labels = c("0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%")) + 
+  scale_x_discrete(
+    labels = c(
+      "Asian" = "AS",
+      "Other" = "OTR", 
+      "2 or more races" = "2+",
+      "Non-Hispanic White" = "NHW",
+      "Hawaiian/Pacific Islander" = "HPI",
+      "American Indian/Alaska Native" = "AI/AN",
+      "Hispanic" = "HISP",
+      "Non-Hispanic Black" = "NHB"
+      )
+    ) +
+  theme_light() + 
+  theme(axis.text.x=element_text(color = "black"),
+        axis.text.y=element_text(color = "black"),
+        panel.grid.major=element_line(color="Gray", linetype=1),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_blank(),         
+        plot.title = element_text(size = 12, face = 'bold'),
+        plot.caption.position = 'plot')
+```
+
+option: national/ state/ year/ income? (possible)
+
+# Plot of obesity rate by state (all year/ all race)
+
+```{r}
+df_state <- df %>%
+  filter(Class == 'Obesity / Weight Status') %>%
+  filter(LocationAbbr != "US") %>%
+  select(LocationAbbr, Data_Value_Alt) %>%
+  na.omit()
+```
+
+```{r}
+df_summary_state <- df_state %>%
+  group_by(LocationAbbr) %>%
+  summarise(Avg_Data_Value_Alt = mean(Data_Value_Alt))
+
+midpoint <- median(df_summary_state$Avg_Data_Value_Alt)
+
+df_summary_state  <- df_summary_state  %>%
+  rename(state = LocationAbbr)
+```
+
+```{r}
+plot_usmap(data = df_summary_state, values = "Avg_Data_Value_Alt", default_fill = "gray") + 
+  scale_fill_gradient2(low = "green",
+                       mid = "yellow",
+                       high = "red", 
+                       midpoint = midpoint,
+                       name = "legend") +
+  labs(title = "Map")
+```
+
+option: year/ race/ ?income
+
+# Plot of obesity rate by year (national/ all race)
+```{r}
+df_year <- df %>% 
+  filter(Class == 'Obesity / Weight Status') %>% 
+  filter(LocationAbbr == 'US') %>%
+  filter(Question == 'Percent of adults aged 18 years and older who have obesity') %>%
+  select(YearEnd, Data_Value_Alt, `Race/Ethnicity`) %>%
+  na.omit
+#df_year %>% distinct(Question)
+```
+
+```{r}
+ggplot(df_year, aes(x=YearEnd, y=Data_Value_Alt, group=`Race/Ethnicity`, color=`Race/Ethnicity`)) +
+  geom_line() +
+  theme_minimal() +
+  labs(title="Trend of Obesity Rate by Race/Ethnicity (2011-2020)",
+       x="Year",
+       y="Obesity Rate (%)")
+```
