@@ -144,7 +144,8 @@ ggplot(df_summary_race, aes(x=`Race/Ethnicity`, y=Avg_Data_Value_Alt)) +
         panel.grid.minor.y = element_blank(),
         panel.grid.major.x = element_blank(),         
         plot.title = element_text(size = 12, face = 'bold'),
-        plot.caption.position = 'plot')
+        plot.caption.position = 'plot') +
+  geom_hline(yintercept = 30, linetype = "dashed", color = "red", size = 1)
 ```
 
 option: national/ state/ year/ income? (possible)
