@@ -193,8 +193,12 @@ plot_usmap(data = df_summary_state, values = "Avg_Data_Value_Alt", default_fill 
                        high = "red", 
                        midpoint = midpoint,
                        name = "legend") +
-  labs(title = "Map",
-       caption = "Source: Centers for Disease Control and Prevention")
+  labs(title = "Map of Obesity Rate by State",
+       caption = "Source: Centers for Disease Control and Prevention") +
+  theme(plot.title = element_text(size = 19, hjust = 0.5),
+        plot.title.position = "plot",
+        legend.title = element_text(size = 13, hjust = 0.5),
+        legend.text = element_text(size = 10, hjust = 0.5))
 ```
 
 option: year/ race/ ?income
@@ -219,6 +223,17 @@ last_values <- df_year %>%
 df_year$`Race/Ethnicity` <- factor(df_year$`Race/Ethnicity`, 
                                    levels = last_values$`Race/Ethnicity`)
 
+custom_labels <- c(
+      "Asian" = "AS",
+      "Other" = "OTR", 
+      "Non-Hispanic White" = "NHW",
+      "2 or more races" = "2+",
+      "Hispanic" = "HISP",
+      "Hawaiian/Pacific Islander" = "HPI",
+      "American Indian/Alaska Native" = "AI/AN",
+      "Non-Hispanic Black" = "NHB"
+      )
+
 ggplot(df_year, aes(x = YearEnd, y = Data_Value_Alt, color = `Race/Ethnicity`)) +
   geom_line() +
   theme_minimal() +
@@ -228,10 +243,12 @@ ggplot(df_year, aes(x = YearEnd, y = Data_Value_Alt, color = `Race/Ethnicity`)) 
        caption = "Source: Centers for Disease Control and Prevention") +
   scale_color_viridis_d(labels = custom_labels) +
   theme(plot.title = element_text(size = 19),
-        axis.text.y = element_text(size =12),
-        axis.text.x = element_text(size =12),
-        axis.title.y = element_text(size =14),
-        axis.title.x = element_text(size =14),
+        axis.text.y = element_text(size =13),
+        axis.text.x = element_text(size =13),
+        axis.title.y = element_text(size =15),
+        axis.title.x = element_text(size =15),
         legend.title = element_text(size =15),
-        legend.text = element_text(size =13),)
+        legend.text = element_text(size =13),) +
+  scale_x_continuous(name = "Year", breaks = seq(2010, 2021, by = 2)) +
+  scale_y_continuous(labels = percent_format(scale = 1))
 ```
