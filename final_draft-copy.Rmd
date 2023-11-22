@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "451 Group Project"
 author: "Liuyixin Shao and Yi Su"
 date: "2023-11-09"
 output: pdf_document
@@ -180,25 +180,33 @@ df_summary_state <- df_state %>%
   group_by(LocationAbbr) %>%
   summarise(Avg_Data_Value_Alt = mean(Data_Value_Alt))
 
-midpoint <- median(df_summary_state$Avg_Data_Value_Alt)
+# midpoint <- median(df_summary_state$Avg_Data_Value_Alt)
 
 df_summary_state  <- df_summary_state  %>%
   rename(state = LocationAbbr)
 ```
 
-```{r}
-plot_usmap(data = df_summary_state, values = "Avg_Data_Value_Alt", default_fill = "gray") + 
-  scale_fill_gradient2(low = "green",
-                       mid = "yellow",
-                       high = "red", 
-                       midpoint = midpoint,
-                       name = "legend") +
-  labs(title = "Map of Obesity Rate by State",
+```{r, fig.width= 7.3, fig.height= 5}
+p2 <- plot_usmap(data = df_summary_state, values = "Avg_Data_Value_Alt", default_fill = "gray") + 
+  scale_fill_gradient(low = "white",
+                      high = muted("#404788FF"), 
+                      name = "Avg Obs Rate",
+                      labels = scales::percent_format(scale = 1)) +
+  labs(title = "Map of National Obesity Rate by State, 2011-2021",
        caption = "Source: Centers for Disease Control and Prevention") +
-  theme(plot.title = element_text(size = 19, hjust = 0.5),
+  theme(plot.title = element_text(size = 19, hjust = 0.5, face = "bold"),
         plot.title.position = "plot",
-        legend.title = element_text(size = 13, hjust = 0.5),
-        legend.text = element_text(size = 10, hjust = 0.5))
+        legend.title = element_text(size = 12, hjust = 0.5),
+        legend.text = element_text(size = 10, hjust = 0.5),
+        legend.position = c(0.9, 0.1),
+        plot.caption.position = 'plot',
+        plot.caption = element_text(size = 10),
+        plot.background = element_rect(fill = "white", color = "white"))
+p2
+```
+
+```{r}
+ggsave("451_final_image_2.png", p2, width = 7.3, height = 5, dpi = 300)
 ```
 
 option: year/ race/ ?income
@@ -233,22 +241,32 @@ custom_labels <- c(
       "American Indian/Alaska Native" = "AI/AN",
       "Non-Hispanic Black" = "NHB"
       )
-
-ggplot(df_year, aes(x = YearEnd, y = Data_Value_Alt, color = `Race/Ethnicity`)) +
-  geom_line() +
+```
+```{r, fig.width= 7, fig.height= 6}
+p3<- ggplot(df_year, aes(x = YearEnd, y = Data_Value_Alt, color = `Race/Ethnicity`)) +
+  geom_line(size = 1) +
   theme_minimal() +
-  labs(title = "Trend of Obesity Rate by Race/Ethnicity (2011-2021)",
+  labs(title = "Trend of Obesity Rate by Race/Ethnicity, 2011-2021",
        x = "Year",
-       y = "Obesity Rate (%)",
+       y = "The Obesity Rate",
        caption = "Source: Centers for Disease Control and Prevention") +
   scale_color_viridis_d(labels = custom_labels) +
-  theme(plot.title = element_text(size = 19),
+  theme(plot.title = element_text(size = 19, hjust = 0.2, face = "bold"),
         axis.text.y = element_text(size =13),
         axis.text.x = element_text(size =13),
         axis.title.y = element_text(size =15),
         axis.title.x = element_text(size =15),
         legend.title = element_text(size =15),
-        legend.text = element_text(size =13),) +
+        legend.text = element_text(size =13),
+        plot.caption.position = 'plot',
+        plot.caption = element_text(size = 10),
+        plot.background = element_rect(fill = "white")) +
   scale_x_continuous(name = "Year", breaks = seq(2010, 2021, by = 2)) +
   scale_y_continuous(labels = percent_format(scale = 1))
+p3
 ```
+
+```{r}
+ggsave("451_final_image_3.png", p3, width = 7, height = 6, dpi = 300)
+```
+
