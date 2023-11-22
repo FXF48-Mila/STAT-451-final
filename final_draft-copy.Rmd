@@ -192,7 +192,7 @@ p2 <- plot_usmap(data = df_summary_state, values = "Avg_Data_Value_Alt", default
                       high = muted("#404788FF"), 
                       name = "Avg Obs Rate",
                       labels = scales::percent_format(scale = 1)) +
-  labs(title = "Map of National Obesity Rate by State, 2011-2021",
+  labs(title = "Map of Average Obesity Rate by State, 2011-2021",
        caption = "Source: Centers for Disease Control and Prevention") +
   theme(plot.title = element_text(size = 19, hjust = 0.5, face = "bold"),
         plot.title.position = "plot",
@@ -269,4 +269,3 @@ p3
 ```{r}
 ggsave("451_final_image_3.png", p3, width = 7, height = 6, dpi = 300)
 ```
-
