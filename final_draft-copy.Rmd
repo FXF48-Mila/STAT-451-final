@@ -268,7 +268,7 @@ p3<- ggplot(df_year, aes(x = YearEnd, y = Data_Value_Alt, color = `Race/Ethnicit
         legend.text = element_text(size =13),
         plot.caption.position = 'plot',
         plot.caption = element_text(size = 10),
-        plot.background = element_rect(fill = "white")) +
+        plot.background = element_rect(fill = "white", color = "white")) +
   scale_x_continuous(name = "Year", breaks = seq(2010, 2021, by = 2)) +
   scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, NA))
 p3
