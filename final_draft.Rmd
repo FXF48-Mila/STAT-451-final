@@ -190,11 +190,9 @@ df_summary_state  <- df_summary_state  %>%
 ```
 
 ```{r, fig.width= 7.3, fig.height= 5}
-p2 <- plot_usmap(data = df_summary_state, values = "Avg_Data_Value_Alt", default_fill = "gray") + 
-  scale_fill_gradient(low = "white",
-                      high = muted("#404788FF"), 
-                      name = "Avg Obs Rate",
-                      labels = scales::percent_format(scale = 1)) +
+p2 <- plot_usmap(data = df_summary_state, values = "Avg_Data_Value_Alt", default_fill = "gray70", colorscale = "Viridis") + 
+  scale_fill_viridis_c(name = "Avg Obs Rate",
+                       labels = scales::percent_format(scale = 1)) +
   labs(title = "Map of Average Obesity Rate by State, 2011-2021",
        caption = "Source: Centers for Disease Control and Prevention") +
   theme(plot.title = element_text(size = 19, hjust = 0.5, face = "bold"),
@@ -207,6 +205,7 @@ p2 <- plot_usmap(data = df_summary_state, values = "Avg_Data_Value_Alt", default
         plot.background = element_rect(fill = "white", color = "white"))
 p2
 ```
+
 
 ```{r}
 ggsave("451_final_image_2.png", p2, width = 7.3, height = 5, dpi = 300)
