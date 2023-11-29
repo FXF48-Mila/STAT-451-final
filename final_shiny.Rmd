@@ -62,6 +62,7 @@ data_A <- reactive({
   filter(Class == 'Obesity / Weight Status') %>%
   filter(Question == 'Percent of adults aged 18 years and older who have obesity') %>%
   filter(`Race/Ethnicity` %in% input$race) %>%
+  filter(YearEnd >= input$year[1], YearEnd <= input$year[2]) %>%
   select(`Race/Ethnicity`, Data_Value_Alt) %>%
   na.omit()
   
