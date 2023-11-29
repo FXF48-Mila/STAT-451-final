@@ -38,7 +38,7 @@ sliderInput("year",
 Row {data-width=350}
 -----------------------------------------------------------------------
 
-### Trend of Obesity Rate by Race/Ethnicity
+### National Average Obesity Rates by Race
 ```{r}
 data_A <- reactive({
   df_race <- df %>%
@@ -107,7 +107,7 @@ renderPlot({
 })
 ```
 
-### Map of Obesity Rate by State
+### Trend of Obesity Rate by Race/Ethnicity
 ```{r}
 data_B <- reactive({
   df_year <- df %>% 
@@ -173,7 +173,7 @@ renderPlot({
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### National Average Obesity Rates by Race
+### Map of Obesity Rate by State
 
 ```{r}
 filtered_data <- reactive({
