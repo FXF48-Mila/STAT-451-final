@@ -70,8 +70,8 @@ data_A <- reactive({
   group_by(`Race/Ethnicity`) %>%
   summarise(Avg_Data_Value_Alt = mean(Data_Value_Alt))
   
-  average_obesity_rate <- mean(df_race$Data_Value_Alt, na.rm = TRUE) # Calculate overall average
-
+  average_obesity_rate <- mean(df_race$Data_Value_Alt, na.rm = TRUE) 
+  
   df_summary_race %>% arrange(Avg_Data_Value_Alt)
 
   df_summary_race$`Race/Ethnicity` <- factor(df_summary_race$`Race/Ethnicity`, levels = c("Asian", "Other", "Non-Hispanic White", "2 or more races", "Hispanic", "Hawaiian/Pacific Islander", "American Indian/Alaska Native", "Non-Hispanic Black"))
@@ -106,15 +106,19 @@ renderPlot({
       "Non-Hispanic Black" = "NHB"
       )) +
     theme_light() + 
-    theme(axis.text.x=element_text(color = "black"),
-          axis.text.y=element_text(color = "black"),
+    theme(axis.text.x=element_text(size = 15),
+          axis.text.y=element_text(size = 15),
           panel.grid.major=element_line(color="Gray", linetype=1),
           panel.grid.minor.x = element_blank(),
           panel.grid.minor.y = element_blank(),
-          panel.grid.major.x = element_blank(),         
-          plot.title = element_text(size = 12.5, face = 'bold'),
+          panel.grid.major.x = element_blank(),
+          axis.title.y = element_text(size =17),
+          axis.title.x = element_text(size =17),
+          legend.title = element_text(size =15),
+          legend.text = element_text(size =15),
+          plot.title = element_text(size = 25, face = 'bold'),
           plot.caption.position = 'plot',
-          plot.caption = element_text(size = 7.5)) +
+          plot.caption = element_text(size = 13)) +
   geom_text(aes(x = 2, y = data$avg_rate, label = "Average Obesity Rate"), 
             color = "red", 
             size = 3, 
@@ -170,15 +174,15 @@ renderPlot({
        y = "The Obesity Rate",
        caption = "Source: Centers for Disease Control and Prevention") +
   scale_color_discrete(labels = data$custom_labels) +
-  theme(plot.title = element_text(size = 19, hjust = 0.2, face = "bold"),
-        axis.text.y = element_text(size =13),
-        axis.text.x = element_text(size =13),
-        axis.title.y = element_text(size =15),
-        axis.title.x = element_text(size =15),
+  theme(plot.title = element_text(size = 25, hjust = 0.2, face = "bold"),
+        axis.text.y = element_text(size =15),
+        axis.text.x = element_text(size =15),
+        axis.title.y = element_text(size =17),
+        axis.title.x = element_text(size =17),
         legend.title = element_text(size =15),
-        legend.text = element_text(size =13),
+        legend.text = element_text(size =15),
         plot.caption.position = 'plot',
-        plot.caption = element_text(size = 10),
+        plot.caption = element_text(size = 13),
         plot.background = element_rect(fill = "white", color = "white")) +
   scale_x_continuous(name = "Year", breaks = seq(2010, 2021, by = 2)) +
   scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, NA))
@@ -215,8 +219,6 @@ filtered_data <- reactive({
 
 renderPlotly({
   l <- list(color = toRGB("white"), width = 2)
-  
-  # specify some map projection/options
   g <- list(
     scope = 'usa',
     projection = list(type = 'albers usa'),
@@ -226,7 +228,6 @@ renderPlotly({
     landcolor = toRGB("grey70")
   )
   
-  # Get the minimum and maximum values of Avg_Data_Value_Alt for the fixed color scale
   min_value <- 10
   max_value <- 45
   
@@ -237,13 +238,16 @@ accuracy = 0.01)),
       locations = ~state,
       color = ~Avg_Data_Value_Alt,
       colorscale = "Viridis", 
-      colorbar = list(title = "Avg Obs Rate", ticksuffix = "%"),  # Set the desired color scale
-      zmin = min_value,  # Set the minimum value for the color scale
-      zmax = max_value,   # Set the maximum value for the color scale
+      colorbar = list(title = "Avg Obs Rate",
+                      ticksuffix = "%", 
+                      len = 1, 
+                      ticklabelposition = "outside right"), 
+      zmin = min_value, 
+      zmax = max_value,   
       hoverinfo = "text"
     ) %>%
-    layout(
-      title = '<b>Filtered Map of Average Obesity Rate by State</b>',
+    layout(title = list(text = '<b>Filtered Map of Average Obesity Rate by State</b>', font = list(size = 25, color = "black"), y = 0.99),
+           
       geo = g
     ) 
   
@@ -251,4 +255,3 @@ accuracy = 0.01)),
 })
 
 ```
-
