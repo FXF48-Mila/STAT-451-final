@@ -18,7 +18,7 @@ df <- read_csv('Nutrition__Physical_Activity__and_Obesity_-_Behavioral_Risk_Fact
 race_choices <- sort(unique(df$'Race/Ethnicity')) %>% na.omit() 
 ```
 
-Column {.sidebar}
+Column {.sidebar data-width=300}
 -----------------------------------------------------------------------
 ### Sidebar
 
@@ -33,6 +33,22 @@ sliderInput("year",
             sep = "",
             step = 1
 )
+
+HTML("<div style='padding: 10px; background-color: #f0f0f0; margin-top: 10px;'>
+        <p><b>Note</b></p>
+        <p>The obesity rate is defined as the proportion of adults with a body mass index (BMI) &ge; 30 kg/m<sup>2</sup></p>
+        <p>Abbreviations comparison table:</p>
+        <ul>
+          <li>'AS' = 'Asian'</li>
+          <li>'OTR' = 'Other'</li>
+          <li>'2+' = '2 or more races'</li>
+          <li>'NHW' = 'Non-Hispanic White'</li>
+          <li>'HPI' = 'Hawaiian/Pacific Islander'</li>
+          <li>'AI/AN' = 'American Indian/Alaska Native'</li>
+          <li>'HISP' = 'Hispanic'</li>
+          <li>'NHB' = 'Non-Hispanic Black'</li>
+        </ul>
+       </div>")
 ```
 
 Row {data-width=350}
@@ -211,7 +227,7 @@ renderPlotly({
   
   # Get the minimum and maximum values of Avg_Data_Value_Alt for the fixed color scale
   min_value <- 10
-  max_value <- 50
+  max_value <- 45
   
   fig <- plot_geo(filtered_data(), locationmode = 'USA-states') %>%
     add_trace(
