@@ -1,0 +1,106 @@
+---
+title: "451 Group Project"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dplyr)
+library(plotly)
+library(shiny)
+library(tidyverse)
+library(scales)
+library(usmap)
+
+df <- read_csv('Nutrition__Physical_Activity__and_Obesity_-_Behavioral_Risk_Factor_Surveillance_System.csv')
+
+race_choices <- unique(df$'Race/Ethnicity') %>% na.omit()
+```
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+### Sidebar
+
+```{r}
+checkboxGroupInput("race", "Select Race:", choices = race_choices, selected = "Asian")
+sliderInput("year", "Select Year:", min = 2011, max = 2021, value = 2011)
+
+```
+
+Row {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart A
+```{r}
+
+```
+
+### Chart B
+
+```{r}
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+
+
+
+### Chart C
+
+```{r}
+filtered_data <- reactive({
+  df_filtered <- df %>%
+    filter(Class == 'Obesity / Weight Status') %>%
+    filter(Question == 'Percent of adults aged 18 years and older who have obesity') %>%
+    filter(LocationAbbr != "US") %>%
+    filter(`Race/Ethnicity` %in% input$race) %>%
+    filter(`YearEnd` == input$year) %>%
+    select(LocationAbbr, Data_Value_Alt) %>%
+    na.omit()
+  
+  df_summary_filtered <- df_filtered %>%
+    group_by(LocationAbbr) %>%
+    summarise(Avg_Data_Value_Alt = mean(Data_Value_Alt))
+  
+  df_summary_filtered <- df_summary_filtered %>%
+    rename(state = LocationAbbr)
+  
+  df_summary_filtered$hover <- paste("State: ", df_summary_filtered$state, "<br>Avg Obs Rate: ", scales::percent(df_summary_filtered$Avg_Data_Value_Alt))
+  
+  df_summary_filtered
+})
+
+renderPlotly({
+  l <- list(color = toRGB("white"), width = 2)
+  # specify some map projection/options
+  g <- list(
+    scope = 'usa',
+    projection = list(type = 'albers usa'),
+    showlakes = TRUE,
+    lakecolor = toRGB('white'),
+    showland = TRUE,
+    landcolor = toRGB("grey70")
+  )
+  
+  fig <- plot_geo(filtered_data(), locationmode = 'USA-states') %>%
+    add_trace(
+      z = ~Avg_Data_Value_Alt, text = ~hover, locations = ~state,
+      color = ~Avg_Data_Value_Alt, colors = 'Purples',
+      colorbar = list(title = "Avg Obs Rate")
+    ) %>%
+    layout(
+      title = 'Filtered Map of Average Obesity Rate by State',
+      geo = g
+    ) 
+  
+print(fig)
+})
+
+```
+
