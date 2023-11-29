@@ -38,7 +38,7 @@ sliderInput("year",
 Row {data-width=350}
 -----------------------------------------------------------------------
 
-### National Average Obesity Rates by Race
+### Trend of Obesity Rate by Race/Ethnicity
 ```{r}
 data_A <- reactive({
   df_race <- df %>%
@@ -72,7 +72,7 @@ renderPlot({
     geom_hline(yintercept = data$avg_rate, linetype = "dashed", color = "red", size = 1) +
     labs(y= "Obesity Rate (%)",
          x = "Race / Ethnicity", 
-         title = "National Average Obesity Rates by Race, 2011-2021",
+         title = "National Average Obesity Rates by Race",
          caption = "Source: Centers for Disease Control and Prevention") +
     scale_y_continuous(limits=c(0, 40),
                        breaks=seq(0, 40, 5),
@@ -173,7 +173,7 @@ renderPlot({
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Trend of Obesity Rate by Race/Ethnicity
+### National Average Obesity Rates by Race
 
 ```{r}
 filtered_data <- reactive({
