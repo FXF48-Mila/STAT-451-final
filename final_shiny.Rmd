@@ -33,14 +33,6 @@ sliderInput("year",
             sep = "",
             step = 1
 )
-sliderInput("years",
-            "Years included",
-            min = 2011,
-            max = 2021,
-            value = c(2011, 2021),
-            sep = "",
-            step = 1
-)
 ```
 
 Row {data-width=350}
@@ -123,7 +115,7 @@ data_B <- reactive({
   filter(LocationAbbr == 'US') %>%
   filter(Question == 'Percent of adults aged 18 years and older who have obesity') %>%
   filter(`Race/Ethnicity` %in% input$race) %>%
-  filter(YearEnd >= input$years[1], YearEnd <= input$years[2]) %>%
+  filter(YearEnd >= input$year[1], YearEnd <= input$year[2]) %>%
   select(YearEnd, Data_Value_Alt, `Race/Ethnicity`) %>%
   na.omit
   
