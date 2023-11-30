@@ -1,5 +1,5 @@
 ---
-title: "451 Group Project: Analysis of obesity rates in the United States, by Liuyixin Shao and Yi Su"
+title: "451 Group Project: Analysis of Obesity Rates in the United States, by Liuyixin Shao and Yi Su"
 output: 
   flexdashboard::flex_dashboard:
      theme:
@@ -100,13 +100,10 @@ renderPlot({
   thePlot = ggplot(data$data, aes(x=reorder(`Race/Ethnicity`, Avg_Data_Value_Alt, sum), y=Avg_Data_Value_Alt))  +
     geom_bar(stat="identity", fill = "#367588") +
     geom_hline(yintercept = 30, linetype = "dashed", color = "#481567FF", size = 2) +
-    labs(y= "Obesity Rate (%)",
+    labs(y= "Obesity Rate",
          x = "Race / Ethnicity", 
          title = "National Average Obesity Rates by Race",
          caption = "Source: Centers for Disease Control and Prevention") +
-    scale_y_continuous(limits=c(0, 40),
-                       breaks=seq(0, 40, 5),
-                       labels = c("0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%")) + 
   scale_x_discrete(
     labels = data$custom_labels) +
     theme_light() + 
@@ -124,9 +121,11 @@ renderPlot({
           plot.caption.position = 'plot',
           plot.caption = element_text(size = 13)) +
   geom_text(aes(x = 2, y = 30, label = "Average Obesity Rate"), 
+            position = "identity",
             color = "#481567FF", 
             size = 5, 
-            vjust = -1)
+            vjust = -1) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, 45))
 
   print(thePlot)
 })
@@ -176,7 +175,7 @@ renderPlot({
   theme_minimal() +
   labs(title = "Trend of Obesity Rate by Race/Ethnicity",
        x = "Year",
-       y = "The Obesity Rate",
+       y = "Obesity Rate",
        caption = "Source: Centers for Disease Control and Prevention") +
   scale_color_viridis_d(labels = data$custom_labels, end = 0.98) +
   theme(plot.title = element_text(size = 25, hjust = 0.2, face = "bold"),
@@ -190,7 +189,7 @@ renderPlot({
         plot.caption = element_text(size = 13),
         plot.background = element_rect(fill = "white", color = "white")) +
   scale_x_continuous(name = "Year", breaks = seq(2010, 2021, by = 2)) +
-  scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, NA)) 
+  scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, 45)) 
 
   print(thePlot)
 })
