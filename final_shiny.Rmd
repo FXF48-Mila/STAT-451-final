@@ -77,23 +77,27 @@ data_A <- reactive({
   
   df_summary_race <- df_race %>%
   group_by(`Race/Ethnicity`) %>%
-  summarise(Avg_Data_Value_Alt = mean(Data_Value_Alt))
-  
-  average_obesity_rate <- mean(df_race$Data_Value_Alt, na.rm = TRUE) 
-  
-  df_summary_race %>% arrange(Avg_Data_Value_Alt)
+  summarise(Avg_Data_Value_Alt = mean(Data_Value_Alt))%>%
+  arrange(desc(Avg_Data_Value_Alt))
 
-  df_summary_race$`Race/Ethnicity` <- factor(df_summary_race$`Race/Ethnicity`, levels = c("Asian", "Other", "Non-Hispanic White", "2 or more races", "Hispanic", "Hawaiian/Pacific Islander", "American Indian/Alaska Native", "Non-Hispanic Black"))
+  custom_labels <- c(
+      "Asian" = "AS",
+      "Other" = "OTR", 
+      "Non-Hispanic White" = "NHW",
+      "2 or more races" = "2+",
+      "Hispanic" = "HISP",
+      "Hawaiian/Pacific Islander" = "HPI",
+      "American Indian/Alaska Native" = "AI/AN",
+      "Non-Hispanic Black" = "NHB"
+      )
   
-  df_summary_race
-  
-  list(data = df_summary_race, avg_rate = average_obesity_rate)
+  list(data = df_summary_race, custom_labels = custom_labels)
 
 })
 
 renderPlot({
   data <- data_A()
-  thePlot = ggplot(data$data, aes(x=`Race/Ethnicity`, y=Avg_Data_Value_Alt))  +
+  thePlot = ggplot(data$data, aes(x=reorder(`Race/Ethnicity`, Avg_Data_Value_Alt, sum), y=Avg_Data_Value_Alt))  +
     geom_bar(stat="identity", fill = "#367588") +
     geom_hline(yintercept = 30, linetype = "dashed", color = "#481567FF", size = 2) +
     labs(y= "Obesity Rate (%)",
@@ -104,16 +108,7 @@ renderPlot({
                        breaks=seq(0, 40, 5),
                        labels = c("0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%")) + 
   scale_x_discrete(
-    labels = c(
-      "Asian" = "AS",
-      "Other" = "OTR", 
-      "Non-Hispanic White" = "NHW",
-      "2 or more races" = "2+",
-      "Hispanic" = "HISP",
-      "Hawaiian/Pacific Islander" = "HPI",
-      "American Indian/Alaska Native" = "AI/AN",
-      "Non-Hispanic Black" = "NHB"
-      )) +
+    labels = data$custom_labels) +
     theme_light() + 
     theme(axis.text.x=element_text(size = 15),
           axis.text.y=element_text(size = 15),
@@ -147,7 +142,7 @@ data_B <- reactive({
   filter(`Race/Ethnicity` %in% input$race) %>%
   filter(YearEnd >= input$year[1], YearEnd <= input$year[2]) %>%
   select(YearEnd, Data_Value_Alt, `Race/Ethnicity`) %>%
-  na.omit
+  na.omit()
   
   last_values <- df_year %>%
   group_by(`Race/Ethnicity`) %>%
@@ -177,6 +172,7 @@ renderPlot({
   thePlot <- ggplot(data$data, aes(x = YearEnd, y = Data_Value_Alt, 
                                    color = `Race/Ethnicity`)) +
   geom_line(size = 1.5) +
+  geom_point(size = 1)+
   theme_minimal() +
   labs(title = "Trend of Obesity Rate by Race/Ethnicity",
        x = "Year",
