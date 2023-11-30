@@ -1,9 +1,18 @@
 ---
-title: "451 Group Project"
+title: "451 Group Project: Analysis of obesity rates in the United States, by Liuyixin Shao and Yi Su"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: rows
-    vertical_layout: fill
+     theme:
+        version: 4 
+        bg: "#ffffff"
+        fg: "#000000"
+        primary: "#120a8f"
+        base_font:
+          google: Lato
+        code_font:
+          google: Lato
+     vertical_layout: fill
+     orientation: rows
 runtime: shiny
 ---
 
@@ -20,13 +29,13 @@ race_choices <- sort(unique(df$'Race/Ethnicity')) %>% na.omit()
 
 Column {.sidebar data-width=300}
 -----------------------------------------------------------------------
-### Sidebar
+#### Control Panel
 
 ```{r}
-checkboxGroupInput("race", "Select Race:", choices = race_choices, selected = race_choices)
+checkboxGroupInput("race", HTML("<b>Races included:</b>"), choices = race_choices, selected = race_choices)
 
 sliderInput("year",
-            "Years included",
+            HTML("<b>Years included:</b>"),
             min = 2011,
             max = 2021,
             value = c(2011, 2021),
@@ -35,9 +44,9 @@ sliderInput("year",
 )
 
 HTML("<div style='padding: 10px; background-color: #f0f0f0; margin-top: 10px;'>
-        <p><b>Note</b></p>
+        <p><b>Note:</b></p>
         <p>The obesity rate is defined as the proportion of adults with a body mass index (BMI) &ge; 30 kg/m<sup>2</sup></p>
-        <p>Abbreviations comparison table:</p>
+        <p><b>The Abbreviations Comparison Table:</b></p>
         <ul>
           <li>'AS' = 'Asian'</li>
           <li>'OTR' = 'Other'</li>
