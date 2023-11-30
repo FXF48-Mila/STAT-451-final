@@ -120,11 +120,12 @@ renderPlot({
           plot.title = element_text(size = 25, face = 'bold'),
           plot.caption.position = 'plot',
           plot.caption = element_text(size = 13)) +
-  geom_text(aes(x = 2, y = 30, label = "Average Obesity Rate"), 
+  geom_text(aes(x = 0, y = 35, label = "Average Obesity Rate"), 
             position = "identity",
             color = "#481567FF", 
             size = 5, 
-            vjust = -1) +
+            vjust = -1,
+            hjust = -0.5) +
   scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, 45))
 
   print(thePlot)
