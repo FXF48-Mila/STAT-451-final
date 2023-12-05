@@ -27,7 +27,7 @@ df <- read_csv('Nutrition__Physical_Activity__and_Obesity_-_Behavioral_Risk_Fact
 race_choices <- sort(unique(df$'Race/Ethnicity')) %>% na.omit() 
 ```
 
-Column {.sidebar data-width=310}
+Column {.sidebar data-width=350}
 -----------------------------------------------------------------------
 #### Control Panel
 
@@ -57,13 +57,14 @@ HTML("<div style='padding: 10px; background-color: #f0f0f0; margin-top: 10px;'>
           <li>'HISP' = 'Hispanic'</li>
           <li>'NHB' = 'Non-Hispanic Black'</li>
         </ul>
-       </div>")
+       <p><b>Source:</b> <a href='https://catalog.data.gov/dataset/nutrition-physical-activity-and-obesity-behavioral-risk-factor-surveillance-system'>Centers for Disease Control and Prevention</a></p>
+     </div>")
 ```
 
 Row {data-width=350}
 -----------------------------------------------------------------------
 
-### National Average Obesity Rates by Race
+### 
 ```{r}
 data_A <- reactive({
   df_race <- df %>%
@@ -102,8 +103,7 @@ renderPlot({
     geom_hline(yintercept = 30, linetype = "dashed", color = "#481567FF", size = 2) +
     labs(y= "Obesity Rate",
          x = "Race / Ethnicity", 
-         title = "National Average Obesity Rates by Race",
-         caption = "Source: Centers for Disease Control and Prevention") +
+         title = "National Average Obesity Rates by Race") +
   scale_x_discrete(
     labels = data$custom_labels) +
     theme_light() + 
@@ -117,7 +117,7 @@ renderPlot({
           axis.title.x = element_text(size =17),
           legend.title = element_text(size =15),
           legend.text = element_text(size =15),
-          plot.title = element_text(size = 25, face = 'bold'),
+          plot.title = element_text(size = 25, face = 'bold', hjust = 1, family = "Arial"),
           plot.caption.position = 'plot',
           plot.caption = element_text(size = 13)) +
   geom_text(aes(x = 0, y = 30, label = "Average Obesity Rate"), 
@@ -132,7 +132,7 @@ renderPlot({
 })
 ```
 
-### Trend of Obesity Rate by Race/Ethnicity
+### 
 ```{r}
 data_B <- reactive({
   df_year <- df %>% 
@@ -176,10 +176,9 @@ renderPlot({
   theme_minimal() +
   labs(title = "Trend of Obesity Rate by Race/Ethnicity",
        x = "Year",
-       y = "Obesity Rate",
-       caption = "Source: Centers for Disease Control and Prevention") +
+       y = "Obesity Rate") +
   scale_color_viridis_d(labels = data$custom_labels, end = 0.98) +
-  theme(plot.title = element_text(size = 25, hjust = 0.2, face = "bold"),
+  theme(plot.title = element_text(size = 25, hjust = 0.2, face = "bold", family = "Arial"),
         axis.text.y = element_text(size =15),
         axis.text.x = element_text(size =15),
         axis.title.y = element_text(size =17),
@@ -199,7 +198,7 @@ renderPlot({
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Map of Obesity Rate by State
+### 
 
 ```{r}
 filtered_data <- reactive({
@@ -243,6 +242,7 @@ accuracy = 0.01)),
       locations = ~state,
       color = ~Avg_Data_Value_Alt,
       colorscale = "Viridis", 
+      reversescale = T,
       colorbar = list(title = "Avg Obs Rate",
                       ticksuffix = "%", 
                       len = 1, 
@@ -251,7 +251,7 @@ accuracy = 0.01)),
       zmax = max_value,   
       hoverinfo = "text"
     ) %>%
-    layout(title = list(text = '<b>Filtered Map of Average Obesity Rate by State</b>', font = list(size = 25, color = "black"), y = 0.99),
+    layout(title = list(text = '<b>Filtered Map of Average Obesity Rate by State</b>', font = list(size = 25, color = "black", family = "Arial"), y = 0.99, x = 0.45),
            
       geo = g
     ) 
