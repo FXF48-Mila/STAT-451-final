@@ -11,8 +11,8 @@ Here, from Centers for Disease Control and Prevention, the obesity rate in our a
 of adults with a body mass index (BMI) $\geq 30 kg/m^2$.
 The question we want to address is "Do obesity rates vary by race?" More specifically, we would like to explore this issue 
 in terms of geographical location and year. Therefore, when building the shiny app, our specific question could be, 
-"Did the average obesity rate vary by race between years XX and XX?" ; 
-"What did obesity rates look like in relation to race between years XX and XX?" ; 
+"Did the national average obesity rate vary by race between years XX and XX?" ; 
+"What are the annual trend in obesity rates look like in relation to race between years XX and XX?" ; 
 "What did obesity rates look like for specific races in each state in a given year?"; And so on. 
 
 ## Dataset
