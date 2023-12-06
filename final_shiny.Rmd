@@ -174,7 +174,7 @@ renderPlot({
   geom_line(size = 1.5) +
   geom_point(size = 1)+
   theme_minimal() +
-  labs(title = "Trend of Obesity Rate by Race/Ethnicity",
+  labs(title = "Annual Trends in Obesity Rates by Race",
        x = "Year",
        y = "Obesity Rate") +
   scale_color_viridis_d(labels = data$custom_labels, end = 0.98) +
