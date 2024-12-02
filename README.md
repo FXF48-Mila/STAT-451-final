@@ -1,5 +1,10 @@
 # Summary of the project to study obesity rates and race
 
+## To run the interactive web application:
+You need to download both the the final_shiny.Rmd and the dataset (https://catalog.data.gov/dataset/nutrition-physical-activity-and-obesity-behavioral-risk-factor-surveillance-system).
+We recommended to run the web application in R_Studio by clicking "Run Document".
+The actual web application looks like `screenshot_of_the_web_app.jpeg`.
+
 ## Motivation
 Analyzing obesity rates by race is critical to understanding differences in health outcomes across racial and ethnic groups. 
 Such analyses can help to identify the underlying sociocultural, economic, and environmental factors that contribute to varying
